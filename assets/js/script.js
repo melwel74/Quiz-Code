@@ -1,33 +1,24 @@
-var count = 0;
-
-var countEl = document.querySelector('#count');
-var decrementEl = document.querySelector('#decrement');
-var incrementEl = document.querySelector('#increment');
-
-function setCounterText() {
-    countEl.textContent = count;
-}
-
-incrementEl.addEventListener('click', function () {
-    count++;
-    setCounterText();
-});
-
-decrementEl.addEventListener('click', function () {
-    if (count > 0) {
-        count--;
-        setCounterText();
+var questions = [
+    {
+        question: 'do you like cheese',
+        answer: 'yes',
+        choices: ['yes', 'no', 'maybe']
+    },
+    {
+        question: 'is it raining',
+        answer: 'no',
+        choices: ['no', 'sometimes', 'sure']
     }
-});
+]
+var questionIndex=0
 
-var timerEl = document.getElementById('countdown');
-var mainEl = document.getElementById('main');
-var startBtn = document.getElementById('start');
+var score = 1
+var timeleft = 75;
+var buttonEl = document.querySelector('.btn')
 
+buttonEl.addEventListener("click", function () {
+    
 
-
-function countdown() {
-    var timeleft = 5;
     var timeInterval = setInterval(function () {
         if (timeleft > 1) {
             timerEl.textContent = timeleft + 'seconds remaining';
@@ -38,22 +29,52 @@ function countdown() {
         } else {
             timerEl.textContent = '';
             clearInterval(timeInterval);
-            displayMessage();
+          
         }
     }, 1000);
+
+    nextQuestion()
+
+});
+function nextQuestion (){
+    document.querySelector('.choice1').textContent = questions[questionIndex].choices[0]
+    document.querySelector('.choice2').textContent = questions[questionIndex].choices[1]
+    document.querySelector('.choice3').textContent = questions[questionIndex].choices[2]
+    document.querySelector('.question').textContent = questions[questionIndex].question
 }
+function  checkAnswer() {
+    var userChoice = this.innerHTML
+    console.log(userChoice)
+    if (userChoice === questions[questionIndex].answer) {
+        //add to score and display another question
+        score++
 
-function displayMessage() {
-    var wordCount = 0;
-    var msgInterval = setInterval(function () {
-        if (words[wordCount] === undefined) {
-            clearInterval(msgInterval);
-        } else {
-            mainEl.textContent = words[wordCount];
-            wordCount++;
-        }
-    }, 300);
-
+    } else {
+        score--
+        timeleft-=10
+    }
+    questionIndex ++
+    document.querySelector('#count').textContent = score
+    nextQuestion()
 }
+document.getElementById('choice1').addEventListener('click',checkAnswer )
+document.getElementById('choice2').addEventListener('click',checkAnswer )
+document.getElementById('choice3').addEventListener('click',checkAnswer )
 
-startBtn.onclick = countdown;
+
+
+
+
+var count = 0;
+
+
+
+var timerEl = document.getElementById('countdown');
+var mainEl = document.getElementById('main');
+var startBtn = document.getElementById('start');
+
+
+
+
+
+
